@@ -74,6 +74,8 @@ if (process.env.NODE_ENV !== 'test') {
     .connect(process.env.MONGO_URI)
     .then(async () => {
       console.log('✅ MongoDB conectado');
+      console.log(`📂 Banco de dados: ${mongoose.connection.name}`);
+      console.log(`🌐 Host: ${mongoose.connection.host}`);
       await seedAdmin();
       app.listen(PORT, () => {
         console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);
