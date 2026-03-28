@@ -3,7 +3,7 @@
   top: 0;
   left: 0;
   right: 0;
-  z-index: 1000;
+  z-index: 1100; /* Increased to stay above mobile menu */
   border-bottom: 1px solid var(--border);
   height: 80px; /* Increased height for premium feel */
   display: flex;
@@ -184,7 +184,7 @@
   height: 100vh;
   background: #111111; /* Solid Opaque Black-ish */
   transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  z-index: 1002; /* Above everything */
+  z-index: 1050; /* Slightly lower than navbar to stay below the 'X' button */
   padding: 100px 32px;
   box-shadow: -10px 0 50px rgba(0,0,0,0.8);
   border-left: 1px solid var(--border);
