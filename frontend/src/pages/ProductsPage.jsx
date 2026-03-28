@@ -27,12 +27,12 @@ export default function ProductsPage() {
 
   return (
     <main className="products-page container animate-slide-up">
-      <header className="page-header" style={{ marginBottom: '32px' }}>
-        <div>
+      <header className="page-header">
+        <div className="header-title">
           <h1 className="page-title">Catálogo</h1>
           <p className="page-sub">{products.length} produto(s) disponíveis</p>
         </div>
-        <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+        <div className="header-actions">
           <input
             type="text"
             className="search-input"
@@ -41,7 +41,7 @@ export default function ProductsPage() {
             onChange={(e) => setSearch(e.target.value)}
           />
           {user?.role === 'admin' && (
-            <Link to="/products/new" className="btn btn-primary btn-sm">+ Novo Produto</Link>
+            <Link to="/products/new" className="btn btn-primary btn-sm">+ Novo</Link>
           )}
         </div>
       </header>

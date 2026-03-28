@@ -31,8 +31,8 @@ export default function OrdersPage() {
 
   return (
     <main className="orders-page container animate-slide-up">
-      <header className="page-header" style={{ marginBottom: '32px' }}>
-        <div>
+      <header className="page-header">
+        <div className="header-title">
           <h1 className="page-title">{pageTitle}</h1>
           <p className="page-sub">{orders.length} pedido(s) encontrado(s)</p>
         </div>

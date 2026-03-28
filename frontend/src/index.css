@@ -44,7 +44,7 @@ html {
   font-size: 16px; 
 }
 
-body {
+body, html {
   font-family: var(--font-body);
   background: var(--bg);
   color: var(--text);
@@ -52,6 +52,7 @@ body {
   line-height: 1.7; /* Increased line height for better readability */
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  width: 100%;
 }
 
 /* ── Typography fixes ── */
@@ -94,7 +95,13 @@ input, textarea, select {
 .container {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 0 32px; /* Increased side padding */
+  padding: 0 5vw; /* dynamic padding for laptops */
+}
+
+@media (min-width: 1440px) {
+  .container {
+    padding: 0 32px;
+  }
 }
 
 @media (max-width: 768px) {
