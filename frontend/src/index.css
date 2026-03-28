@@ -97,6 +97,12 @@ input, textarea, select {
   padding: 0 32px; /* Increased side padding */
 }
 
+@media (max-width: 768px) {
+  .container {
+    padding: 0 16px;
+  }
+}
+
 /* ── Glassmorphism Utility ── */
 .glass {
   background: var(--glass);
