@@ -182,11 +182,9 @@
   right: -100%;
   width: 320px;
   height: 100vh;
-  background: rgba(18, 18, 18, 0.98); /* More opaque */
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: #111111; /* Solid Opaque Black-ish */
   transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  z-index: 999;
+  z-index: 1002; /* Above everything */
   padding: 100px 32px;
   box-shadow: -10px 0 50px rgba(0,0,0,0.8);
   border-left: 1px solid var(--border);

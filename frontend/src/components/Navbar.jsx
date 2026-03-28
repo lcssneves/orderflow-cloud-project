@@ -71,7 +71,7 @@ export default function Navbar() {
       </div>
 
       {/* Mobile Sidebar */}
-      <div className={`mobile-menu glass ${isMenuOpen ? 'active' : ''}`}>
+      <div className={`mobile-menu ${isMenuOpen ? 'active' : ''}`}>
         <div className="mobile-menu-inner">
           <Link to="/"         className={`mobile-link ${isActive('/') ? 'active' : ''}`} onClick={toggleMenu}>Início</Link>
           <Link to="/products" className={`mobile-link ${isActive('/products') ? 'active' : ''}`} onClick={toggleMenu}>Catálogo</Link>
