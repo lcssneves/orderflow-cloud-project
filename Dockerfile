@@ -1,4 +1,4 @@
-# Use a node base image
+# Use a node base image (build-fix-v2)
 FROM node:18-alpine
 
 # Create app directory
