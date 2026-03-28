@@ -1,0 +1,50 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: './backend/package-lock.json'
+
+    - name: Install Backend Dependencies
+      run: |
+        cd backend
+        npm install
+
+    - name: Build Backend (Check for compilation errors)
+      run: |
+        cd backend
+        # Apenas simulando build, já que é Node puro
+        node --check src/app.js
+
+    - name: Run Backend Tests
+      run: |
+        cd backend
+        npm test
+
+  # Exemplo de Job de Deploy (Placeholder conforme requisitos)
+  # deploy:
+  #   needs: build-and-test
+  #   runs-on: ubuntu-latest
+  #   if: github.ref == 'refs/heads/main'
+  #   steps:
+  #     - name: Deploy to Cloud
+  #       run: echo "Deploying to Render/Railway..."

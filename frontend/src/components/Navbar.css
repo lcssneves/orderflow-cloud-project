@@ -1,0 +1,142 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  border-bottom: 1px solid var(--border);
+  height: 80px; /* Increased height for premium feel */
+  display: flex;
+  align-items: center;
+}
+
+.navbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.brand-icon {
+  font-size: 1.8rem;
+  color: var(--accent);
+  filter: drop-shadow(0 0 10px var(--accent-glow));
+}
+
+.brand-text strong { 
+  color: var(--accent); 
+}
+
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 6px;
+  border-radius: 99px;
+  border: 1px solid var(--border);
+}
+
+.nav-link {
+  padding: 10px 20px;
+  border-radius: 99px;
+  font-size: 0.9rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--text-muted);
+  transition: all 0.2s ease;
+}
+
+.nav-link:hover {
+  color: #fff;
+}
+
+.nav-link.active {
+  color: #fff;
+  background: var(--accent);
+  box-shadow: 0 4px 12px var(--accent-dim);
+}
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.cart-btn {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  font-size: 1.2rem;
+  transition: all 0.2s ease;
+}
+
+.cart-btn:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  background: var(--accent-dim);
+}
+
+.cart-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: var(--accent2);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--bg);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.user-menu, .auth-btns {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-left: 20px;
+  border-left: 1px solid var(--border);
+}
+
+.nav-user {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.nav-user strong {
+  color: #fff;
+}
+
+.btn-sm {
+  padding: 10px 18px;
+  font-size: 0.85rem;
+}
+
+/* Responsividade Básica */
+@media (max-width: 768px) {
+  .navbar-inner { gap: 16px; }
+  .navbar-links { display: none; }
+  .nav-user { display: none; }
+}
