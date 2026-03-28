@@ -134,9 +134,14 @@
   font-size: 0.85rem;
 }
 
-/* Responsividade Básica */
+/* Responsividade Master */
 @media (max-width: 768px) {
-  .navbar-inner { gap: 16px; }
+  .navbar-inner { gap: 12px; }
+  .navbar-brand { font-size: 1.1rem; gap: 6px; }
+  .brand-icon { font-size: 1.4rem; }
   .navbar-links { display: none; }
   .nav-user { display: none; }
+  .auth-btns, .user-menu { gap: 8px; padding-left: 12px; }
+  .btn-sm { padding: 8px 12px; font-size: 0.75rem; }
+  .navbar-actions { gap: 12px; }
 }
