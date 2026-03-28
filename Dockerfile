@@ -5,11 +5,12 @@ FROM node:18-alpine
 WORKDIR /app
 
 # Install dependencies (use package-lock.json if available)
-COPY package*.json ./
+# Pointing to the backend subdirectory
+COPY backend/package*.json ./
 RUN npm install
 
-# Bundle app source
-COPY . .
+# Bundle app source (from backend subdirectory)
+COPY backend/ .
 
 # Expose port
 EXPOSE 3000
