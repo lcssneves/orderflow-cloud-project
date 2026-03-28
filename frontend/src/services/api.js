@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'https://orderflow-cloud-project-1.onrender.com',
+  baseURL: import.meta.env.VITE_API_URL || 'https://orderflow-cloud-project.onrender.com',
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
