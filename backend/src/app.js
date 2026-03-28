@@ -70,11 +70,17 @@ async function seedAdmin() {
 
 // ── Banco de dados + Servidor ─────────────────────────────────
 if (process.env.NODE_ENV !== 'test') {
+  const mongoURI = process.env.MONGO_URI ? process.env.MONGO_URI.replace(/\/\/([^/]+)\/\//, '//$1/') : null;
+
   mongoose
-    .connect(process.env.MONGO_URI)
+    .connect(mongoURI)
     .then(async () => {
       console.log('✅ MongoDB conectado');
-      console.log(`📂 Banco de dados: ${mongoose.connection.name}`);
+      // Limpa a barra inicial no log se existir para clareza
+      const dbName = mongoose.connection.name.startsWith('/') 
+        ? mongoose.connection.name.substring(1) 
+        : mongoose.connection.name;
+      console.log(`📂 Banco de dados: ${dbName}`);
       console.log(`🌐 Host: ${mongoose.connection.host}`);
       await seedAdmin();
       app.listen(PORT, () => {
