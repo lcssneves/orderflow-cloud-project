@@ -19,7 +19,8 @@ const STATUS_LABEL = {
 
 const PAYMENT_LABEL = {
   credit_card: 'Cartão de Crédito',
-  pix:         'PIX',
+  debit_card:  'Cartão de Débito',
+  pix:         'Pix',
   bank_slip:   'Boleto Bancário',
 };
 
