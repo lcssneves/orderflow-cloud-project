@@ -8,6 +8,7 @@ const formatPrice = (v) =>
 
 export default function ProductCard({ product }) {
   const { addItem } = useCart();
+  const { user } = useAuth();
 
   return (
     <div className="product-card card glass animate-slide-up">
