@@ -15,8 +15,22 @@ router.use(authMiddleware);
  *   description: Gerenciamento de pedidos
  */
 
-// ── GET /orders ───────────────────────────────────────────────
-// Admin vê todos; usuário vê apenas os seus
+/**
+ * @swagger
+ * /orders:
+ *   get:
+ *     summary: Listar pedidos
+ *     tags: [Orders]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: status
+ *         schema: { type: string, enum: ['criado', 'pago', 'enviado', 'entregue', 'cancelado'] }
+ *     responses:
+ *       200:
+ *         description: Lista de pedidos (Admin vê todos, Usuário vê apenas os seus)
+ */
 router.get('/', async (req, res, next) => {
   try {
     const query = req.user.role === 'admin' ? {} : { user: req.user._id };
@@ -33,7 +47,25 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-// ── GET /orders/:id ───────────────────────────────────────────
+/**
+ * @swagger
+ * /orders/{id}:
+ *   get:
+ *     summary: Obter detalhes de um pedido
+ *     tags: [Orders]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: string }
+ *     responses:
+ *       200:
+ *         description: Pedido encontrado
+ *       404:
+ *         description: Não encontrado ou sem permissão
+ */
 router.get('/:id', async (req, res, next) => {
   try {
     const query = { _id: req.params.id };
@@ -50,8 +82,41 @@ router.get('/:id', async (req, res, next) => {
   }
 });
 
-// ── POST /orders ──────────────────────────────────────────────
-// Cria um pedido com base nos itens do carrinho
+/**
+ * @swagger
+ * /orders:
+ *   post:
+ *     summary: Finalizar pedido (Checkout)
+ *     tags: [Orders]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [items, shippingAddress]
+ *             properties:
+ *               items:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     productId: { type: string }
+ *                     quantity: { type: integer }
+ *               shippingAddress:
+ *                 type: object
+ *                 properties:
+ *                   street: { type: string }
+ *                   city: { type: string }
+ *                   state: { type: string }
+ *                   zipCode: { type: string }
+ *               paymentMethod: { type: string, enum: ['credit_card', 'debit_card', 'pix'] }
+ *     responses:
+ *       201:
+ *         description: Pedido criado e estoque atualizado
+ */
 router.post('/', async (req, res, next) => {
   try {
     const { items, shippingAddress, paymentMethod } = req.body;
@@ -94,8 +159,31 @@ router.post('/', async (req, res, next) => {
   }
 });
 
-// ── PATCH /orders/:id/status ──────────────────────────────────
-// Apenas admin pode atualizar o status
+/**
+ * @swagger
+ * /orders/{id}/status:
+ *   patch:
+ *     summary: Atualizar status do pedido (Admin)
+ *     tags: [Orders]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: string }
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               status: { type: string, enum: ['criado', 'pago', 'enviado', 'entregue', 'cancelado'] }
+ *     responses:
+ *       200:
+ *         description: Status atualizado (repõe estoque se cancelado)
+ */
 router.patch('/:id/status', async (req, res, next) => {
   try {
     if (req.user.role !== 'admin') {
@@ -136,8 +224,23 @@ router.patch('/:id/status', async (req, res, next) => {
   }
 });
 
-// ── DELETE /orders/:id ────────────────────────────────────────
-// Usuário cancela o próprio pedido (apenas se status = 'criado'); admin pode cancelar qualquer um
+/**
+ * @swagger
+ * /orders/{id}:
+ *   delete:
+ *     summary: Cancelar/Excluir pedido
+ *     tags: [Orders]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: string }
+ *     responses:
+ *       200:
+ *         description: Cancelado com sucesso (estoque reposto)
+ */
 router.delete('/:id', async (req, res, next) => {
   try {
     const query = { _id: req.params.id };

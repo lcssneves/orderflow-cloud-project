@@ -23,6 +23,59 @@ const options = {
           bearerFormat: 'JWT',
         },
       },
+      schemas: {
+        User: {
+          type: 'object',
+          properties: {
+            _id: { type: 'string' },
+            name: { type: 'string' },
+            email: { type: 'string' },
+            role: { type: 'string', enum: ['user', 'admin'] },
+          },
+        },
+        Product: {
+          type: 'object',
+          properties: {
+            _id: { type: 'string' },
+            name: { type: 'string' },
+            description: { type: 'string' },
+            price: { type: 'number' },
+            stock: { type: 'number' },
+            category: { type: 'string' },
+            imageUrl: { type: 'string' },
+          },
+        },
+        Order: {
+          type: 'object',
+          properties: {
+            _id: { type: 'string' },
+            user: { $ref: '#/components/schemas/User' },
+            items: {
+              type: 'array',
+              items: {
+                type: 'object',
+                properties: {
+                  product: { $ref: '#/components/schemas/Product' },
+                  quantity: { type: 'number' },
+                  unitPrice: { type: 'number' },
+                },
+              },
+            },
+            total: { type: 'number' },
+            status: { type: 'string', enum: ['criado', 'pago', 'enviado', 'entregue', 'cancelado'] },
+            paymentMethod: { type: 'string', enum: ['credit_card', 'debit_card', 'pix', 'bank_slip'] },
+            shippingAddress: {
+              type: 'object',
+              properties: {
+                street: { type: 'string' },
+                city: { type: 'string' },
+                state: { type: 'string' },
+                zipCode: { type: 'string' },
+              },
+            },
+          },
+        },
+      },
     },
   },
   apis: ['./src/routes/*.js'], // Caminho para encontrar os comentários JSDoc

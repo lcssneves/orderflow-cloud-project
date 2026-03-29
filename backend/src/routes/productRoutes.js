@@ -11,8 +11,29 @@ const router = Router();
  *   description: CRUD de produtos
  */
 
-// ── GET /products ─────────────────────────────────────────────
-// Público — lista todos os produtos com paginação opcional
+/**
+ * @swagger
+ * /products:
+ *   get:
+ *     summary: Listar produtos
+ *     tags: [Products]
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema: { type: integer, default: 1 }
+ *       - in: query
+ *         name: limit
+ *         schema: { type: integer, default: 12 }
+ *       - in: query
+ *         name: category
+ *         schema: { type: string }
+ *       - in: query
+ *         name: search
+ *         schema: { type: string }
+ *     responses:
+ *       200:
+ *         description: Lista de produtos retornada com sucesso
+ */
 router.get('/', async (req, res, next) => {
   try {
     const { page = 1, limit = 12, category, search } = req.query;
@@ -34,7 +55,23 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-// ── GET /products/:id ─────────────────────────────────────────
+/**
+ * @swagger
+ * /products/{id}:
+ *   get:
+ *     summary: Obter um produto pelo ID
+ *     tags: [Products]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: string }
+ *     responses:
+ *       200:
+ *         description: Produto encontrado
+ *       404:
+ *         description: Produto não encontrado
+ */
 router.get('/:id', async (req, res, next) => {
   try {
     const product = await Product.findById(req.params.id);
@@ -45,8 +82,26 @@ router.get('/:id', async (req, res, next) => {
   }
 });
 
-// ── POST /products ────────────────────────────────────────────
-// Apenas admin
+/**
+ * @swagger
+ * /products:
+ *   post:
+ *     summary: Criar novo produto (Admin)
+ *     tags: [Products]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Product'
+ *     responses:
+ *       201:
+ *         description: Criado com sucesso
+ *       403:
+ *         description: Acesso negado
+ */
 router.post('/', authMiddleware, async (req, res, next) => {
   try {
     if (req.user.role !== 'admin') {
@@ -66,8 +121,29 @@ router.post('/', authMiddleware, async (req, res, next) => {
   }
 });
 
-// ── PUT /products/:id ─────────────────────────────────────────
-// Apenas admin
+/**
+ * @swagger
+ * /products/{id}:
+ *   put:
+ *     summary: Atualizar produto (Admin)
+ *     tags: [Products]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: string }
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Product'
+ *     responses:
+ *       200:
+ *         description: Atualizado com sucesso
+ */
 router.put('/:id', authMiddleware, async (req, res, next) => {
   try {
     if (req.user.role !== 'admin') {
@@ -89,8 +165,23 @@ router.put('/:id', authMiddleware, async (req, res, next) => {
   }
 });
 
-// ── DELETE /products/:id ──────────────────────────────────────
-// Apenas admin
+/**
+ * @swagger
+ * /products/{id}:
+ *   delete:
+ *     summary: Excluir produto (Admin)
+ *     tags: [Products]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: string }
+ *     responses:
+ *       200:
+ *         description: Excluído com sucesso
+ */
 router.delete('/:id', authMiddleware, async (req, res, next) => {
   try {
     if (req.user.role !== 'admin') {

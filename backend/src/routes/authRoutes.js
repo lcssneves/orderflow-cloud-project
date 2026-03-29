@@ -9,7 +9,38 @@ const router = Router();
 const generateToken = (userId) =>
   jwt.sign({ id: userId }, process.env.JWT_SECRET, { expiresIn: '7d' });
 
-// ── POST /auth/register ──────────────────────────────────────
+/**
+ * @swagger
+ * tags:
+ *   name: Auth
+ *   description: Sistema de autenticação e gestão de usuários
+ */
+
+/**
+ * @swagger
+ * /auth/register:
+ *   post:
+ *     summary: Cadastrar um novo usuário
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [name, email, password]
+ *             properties:
+ *               name: { type: string }
+ *               email: { type: string }
+ *               password: { type: string }
+ *     responses:
+ *       201:
+ *         description: Usuário criado com sucesso
+ *       400:
+ *         description: Dados inválidos
+ *       409:
+ *         description: E-mail já cadastrado
+ */
 router.post('/register', async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
@@ -39,7 +70,28 @@ router.post('/register', async (req, res, next) => {
   }
 });
 
-// ── POST /auth/login ─────────────────────────────────────────
+/**
+ * @swagger
+ * /auth/login:
+ *   post:
+ *     summary: Realizar login
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [email, password]
+ *             properties:
+ *               email: { type: string }
+ *               password: { type: string }
+ *     responses:
+ *       200:
+ *         description: Login realizado com sucesso
+ *       401:
+ *         description: Credenciais inválidas
+ */
 router.post('/login', async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -70,9 +122,20 @@ router.post('/login', async (req, res, next) => {
   }
 });
 
-// ── GET /auth/me ─────────────────────────────────────────────
-import authMiddleware from '../middleware/authMiddleware.js';
-
+/**
+ * @swagger
+ * /auth/me:
+ *   get:
+ *     summary: Obter dados do usuário logado
+ *     tags: [Auth]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Dados do perfil retornados com sucesso
+ *       401:
+ *         description: Não autorizado (token ausente ou inválido)
+ */
 router.get('/me', authMiddleware, (req, res) => {
   res.json({ user: req.user });
 });
