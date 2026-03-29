@@ -51,7 +51,7 @@ const orderSchema = new mongoose.Schema(
     },
     paymentMethod: {
       type: String,
-      enum: ['credit_card', 'pix', 'bank_slip'],
+      enum: ['credit_card', 'debit_card', 'pix', 'bank_slip'],
       default: 'credit_card',
     },
   },

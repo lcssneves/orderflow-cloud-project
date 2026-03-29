@@ -1,4 +1,6 @@
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
+import { Link } from 'react-router-dom';
 import './ProductCard.css';
 
 const formatPrice = (v) =>
@@ -33,13 +35,27 @@ export default function ProductCard({ product }) {
         </div>
       </div>
 
-      <button
-        className="btn btn-primary btn-add"
-        disabled={product.stock === 0}
-        onClick={() => addItem(product, 1)}
-      >
-        {product.stock === 0 ? 'Esgotado' : 'Adicionar ao Carrinho'}
-      </button>
+      <div className="product-actions" style={{ display: 'flex', gap: '8px', marginTop: 'auto' }}>
+        <button
+          className="btn btn-primary btn-add"
+          style={{ flex: 1 }}
+          disabled={product.stock === 0}
+          onClick={() => addItem(product, 1)}
+        >
+          {product.stock === 0 ? 'Esgotado' : 'Carrinho'}
+        </button>
+
+        {user?.role === 'admin' && (
+          <Link
+            to={`/products/edit/${product._id}`}
+            className="btn btn-ghost"
+            style={{ width: '48px', padding: '0', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+            title="Editar produto"
+          >
+            ✏️
+          </Link>
+        )}
+      </div>
     </div>
   );
 }

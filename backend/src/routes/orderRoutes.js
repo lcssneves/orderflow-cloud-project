@@ -77,6 +77,13 @@ router.post('/', async (req, res, next) => {
       paymentMethod: paymentMethod || 'credit_card',
     });
 
+    // Baixa de estoque
+    for (const item of orderItems) {
+      await Product.findByIdAndUpdate(item.product, {
+        $inc: { stock: -item.quantity },
+      });
+    }
+
     await order.populate('items.product', 'name price imageUrl');
     res.status(201).json({ message: 'Pedido criado com sucesso', order });
   } catch (err) {
@@ -102,13 +109,27 @@ router.patch('/:id/status', async (req, res, next) => {
       return res.status(400).json({ error: `Status inválido. Use: ${validStatuses.join(', ')}` });
     }
 
-    const order = await Order.findByIdAndUpdate(
-      req.params.id,
-      { status },
-      { new: true }
-    ).populate('user', 'name email').populate('items.product', 'name price');
-
+    const order = await Order.findById(req.params.id);
     if (!order) return res.status(404).json({ error: 'Pedido não encontrado' });
+
+    // Se o status mudar para cancelado e não estava cancelado antes, devolver ao estoque
+    if (status === 'cancelado' && order.status !== 'cancelado') {
+      for (const item of order.items) {
+        await Product.findByIdAndUpdate(item.product, {
+          $inc: { stock: item.quantity },
+        });
+      }
+    }
+
+    // Se mudar de cancelado PARA outra coisa (improvável, mas possível), tirar do estoque novamente?
+    // Por simplicidade, assumiremos que cancelamento é irreversível ou que o admin ajusta manualmente se reverter.
+
+    order.status = status;
+    await order.save();
+    
+    await order.populate('user', 'name email');
+    await order.populate('items.product', 'name price');
+
     res.json({ message: 'Status atualizado', order });
   } catch (err) {
     next(err);
@@ -127,6 +148,15 @@ router.delete('/:id', async (req, res, next) => {
 
     if (req.user.role !== 'admin' && order.status !== 'criado') {
       return res.status(400).json({ error: 'Apenas pedidos com status "criado" podem ser cancelados' });
+    }
+
+    // Devolver ao estoque se não estava cancelado
+    if (order.status !== 'cancelado') {
+      for (const item of order.items) {
+        await Product.findByIdAndUpdate(item.product, {
+          $inc: { stock: item.quantity },
+        });
+      }
     }
 
     await order.deleteOne();

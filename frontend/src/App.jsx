@@ -8,6 +8,7 @@ import RegisterPage  from './pages/RegisterPage';
 import ProductsPage  from './pages/ProductsPage';
 import OrdersPage    from './pages/OrdersPage';
 import NewProductPage from './pages/NewProductPage';
+import EditProductPage from './pages/EditProductPage';
 import CartPage      from './pages/CartPage';
 
 function PrivateRoute({ children }) {
@@ -35,6 +36,7 @@ function AppRoutes() {
           <Route path="/register"     element={<PublicRoute><RegisterPage /></PublicRoute>} />
           <Route path="/orders"       element={<PrivateRoute><OrdersPage /></PrivateRoute>} />
           <Route path="/products/new" element={<PrivateRoute><NewProductPage /></PrivateRoute>} />
+          <Route path="/products/edit/:id" element={<PrivateRoute><EditProductPage /></PrivateRoute>} />
           <Route path="*"             element={<Navigate to="/" replace />} />
         </Routes>
       </div>

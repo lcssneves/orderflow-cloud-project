@@ -14,6 +14,7 @@ export default function CartPage() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError]     = useState('');
+  const [paymentMethod, setPaymentMethod] = useState('credit_card');
 
   const handleCheckout = async () => {
     if (!user) return navigate('/login');
@@ -28,7 +29,7 @@ export default function CartPage() {
           productId: i.product._id,
           quantity: i.quantity,
         })),
-        paymentMethod: 'credit_card',
+        paymentMethod,
       };
       await api.post('/orders', payload);
       clearCart();
@@ -105,6 +106,33 @@ export default function CartPage() {
           <div className="summary-row summary-total">
             <span>Total</span>
             <span>{formatPrice(cartTotal)}</span>
+          </div>
+
+          <div className="payment-method-select" style={{ marginTop: '24px' }}>
+            <p className="summary-title" style={{ fontSize: '0.9rem', marginBottom: '12px' }}>Método de Pagamento</p>
+            <div className="payment-options" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+              <button 
+                className={`btn btn-sm ${paymentMethod === 'credit_card' ? 'btn-primary' : 'btn-ghost'}`}
+                onClick={() => setPaymentMethod('credit_card')}
+                style={{ fontSize: '0.75rem' }}
+              >
+                💳 Crédito
+              </button>
+              <button 
+                className={`btn btn-sm ${paymentMethod === 'debit_card' ? 'btn-primary' : 'btn-ghost'}`}
+                onClick={() => setPaymentMethod('debit_card')}
+                style={{ fontSize: '0.75rem' }}
+              >
+                🏦 Débito
+              </button>
+              <button 
+                className={`btn btn-sm ${paymentMethod === 'pix' ? 'btn-primary' : 'btn-ghost'}`}
+                onClick={() => setPaymentMethod('pix')}
+                style={{ fontSize: '0.75rem', gridColumn: 'span 2' }}
+              >
+                💎 Pix
+              </button>
+            </div>
           </div>
 
           <button
