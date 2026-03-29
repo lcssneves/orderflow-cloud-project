@@ -11,8 +11,12 @@ const options = {
     },
     servers: [
       {
+        url: 'https://orderflow-cloud-project.onrender.com',
+        description: 'Servidor de Produção (Render)',
+      },
+      {
         url: 'http://localhost:3000',
-        description: 'Servidor Local',
+        description: 'Servidor Local (Desenvolvimento)',
       },
     ],
     components: {
